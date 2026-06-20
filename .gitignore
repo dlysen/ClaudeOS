@@ -1,0 +1,37 @@
+# Secrets & private config
+.env
+.env.*
+!.env.example
+CLAUDE.local.md
+**/CLAUDE.local.md
+.claude/settings.local.json
+
+# Dependencies & build artifacts
+node_modules/
+dist/
+build/
+out/
+coverage/
+artifacts/
+cache/
+typechain/
+typechain-types/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / IDE cruft
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# NAS / network drive
+\#recycle/
+
+# External skill library (clone separately; do not vendor) — keep only the README
+.claude/skills/blockchain-skills-external/*
+!.claude/skills/blockchain-skills-external/README.md
