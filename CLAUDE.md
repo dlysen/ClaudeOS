@@ -167,11 +167,13 @@ Store in `.claude/skills/[skill-name]/SKILL.md`
 | **tailwind-ui** | Mobile-first UI components (Tailwind + Lucide + theme system) |
 
 ### Blockchain Skills Library
-**69 blockchain-focused skills** installed from [hairyf/blockchain-skills](https://github.com/hairyf/blockchain-skills.git):
+**69 blockchain-focused skills** from [hairyf/blockchain-skills](https://github.com/hairyf/blockchain-skills.git) (66 usable; 3 — layerzero, mythril, snarkjs — ship without a SKILL.md and are skipped):
 
-- Location: `.claude/skills/blockchain-skills-external/`
-- Installed: `git clone https://github.com/hairyf/blockchain-skills.git .claude/skills/blockchain-skills-external`
-- Update: `cd .claude/skills/blockchain-skills-external && git pull origin main`
+- Location: `.claude/skills/blockchain-skills-external/` (the clone; git-ignored, not vendored)
+- Usable as individual skills via symlinks `.claude/skills/<name>` → `blockchain-skills-external/skills/<name>` (e.g. `/hardhat`, `/solidity`)
+- Installed: `git clone https://github.com/hairyf/blockchain-skills.git .claude/skills/blockchain-skills-external` then symlink each `skills/<name>` into `.claude/skills/`
+- Update: `cd .claude/skills/blockchain-skills-external && git pull origin main`, then re-run the symlink step for any new skills
+- Full install steps: see `.claude/skills/blockchain-skills-external/README.md`
 - Key skills: hardhat, solidity, openzeppelin, foundry, alchemy, dex, uniswap, aave, etc.
 
 ### Using Skills
