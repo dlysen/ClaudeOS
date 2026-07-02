@@ -2,7 +2,7 @@
 
 **For:** Dangal Macatangay (CEO + Developer)  
 **Structure:** Solo operator, full-stack development, fast shipping (7–14 days per project)  
-**Last Updated:** 2026-06-12
+**Last Updated:** 2026-07-02
 
 This document defines how Claude Code operates as your development partner. Use this as a template for all projects.
 
@@ -80,7 +80,13 @@ This document defines how Claude Code operates as your development partner. Use 
 │
 └── templates/                         # Reusable templates
     ├── session-summary.md             # Use at session end
-    └── contract-integration-template.md
+    ├── contract-integration-template.md
+    ├── github-setup-template.md       # Per-project repo + token checklist
+    ├── core-technology-template.md    # [1] React 19 + Vite + Tailwind (always first)
+    ├── design-template.md             # [2] Theme + dark/light UI (second)
+    ├── content-builder-template.md    # +  Config-driven content + gen prompt
+    ├── web3-integration-template.md   # +  wagmi + Reown AppKit connectors
+    └── mongo-integration-template.md  # +  MongoDB (Mongoose) database layer
 ```
 
 ---
@@ -348,6 +354,38 @@ Stored in `.claude/rules/`. Define how Claude Code communicates and behaves.
 
 ## 🔐 Git Workflow
 
+### Project Repository Rule
+- Every project must have its own dedicated GitHub repository.
+- Do not mix multiple projects inside one repository.
+- Create a separate repository per project before linking the local folder to GitHub.
+
+### GitHub Token and .env Setup
+- Store the GitHub token in the project-level `.env` file.
+- Use a classic GitHub Personal Access Token (PAT) and keep it in a variable such as `GITHUB_TOKEN` or `GH_TOKEN`.
+- Example:
+  ```env
+  GITHUB_TOKEN=ghp_your_classic_token_here
+  ```
+- Never commit `.env` to Git. Add it to `.gitignore`.
+
+### Required Token Permissions
+For pushing changes and publishing to GitHub Pages, the token should have enough access to:
+- Push and update the repository
+- Deploy via GitHub Actions if the project uses Pages deployment
+
+Recommended scopes for a classic PAT:
+- `repo` for private repositories
+- `public_repo` for public repositories
+- `workflow` if the deployment workflow needs to update workflow files or use Actions-based publishing
+
+### GitHub Pages and Actions Settings
+To publish a site through GitHub Pages from a repository:
+- In GitHub, open the repository Settings
+- Go to Pages
+- Set Source to GitHub Actions
+- In Actions > General, allow workflow permissions to read and write
+- If the workflow creates pull requests or updates workflow files, enable the option to allow GitHub Actions to create and approve pull requests
+
 ### Commit Philosophy
 Each commit should tell a story:
 - **Good:** `feat: add genealogy admin UI with 4-tab interface`
@@ -397,6 +435,8 @@ Keep the same structure (CLAUDE.md, sessions/, etc.) so you can reference it lat
 
 Use `/project-kickoff` skill or follow this template:
 
+> Each new project must also get its own GitHub repository, with the repository linked to the local project folder and the GitHub token stored in the project `.env` file.
+
 ```bash
 mkdir -p projects/[project-name]/{sessions,src,docs}
 
@@ -410,6 +450,12 @@ cat > projects/[project-name]/CLAUDE.md <<'EOF'
 
 ## Overview
 [2-3 sentence description]
+
+## GitHub Repository Setup
+- Create a dedicated GitHub repository for this project.
+- Link the repository to the local project folder.
+- Store the GitHub classic PAT in the project `.env` file as `GITHUB_TOKEN` or `GH_TOKEN`.
+- Ensure the token has `repo` or `public_repo` access, plus `workflow` access when GitHub Pages or Actions deployment is used.
 
 ## Phases
 ### Phase 1: [Phase Name]
@@ -639,6 +685,27 @@ Use when integrating a new smart contract:
 - Add to config
 - Create hook
 - Create UI component
+
+### github-setup-template.md
+Use as a small reusable checklist for each new project:
+- Create a dedicated repository
+- Store the GitHub classic PAT token in `.env`
+- Ensure the token has push and Pages/Actions access
+- Deploy to GitHub Pages via `gh-pages` with a custom domain (CNAME) + homepage URL
+- Roll back a bad deploy from the `gh-pages` branch history
+
+### Composable Stack Templates
+Modular, mix-and-match templates. **Order matters: always apply `core-technology-template.md` first, then `design-template.md`**, then layer any add-ons the task needs. Call all, or only the one you need — more will be added over time.
+
+| Template | Use when | Prereqs |
+|----------|----------|---------|
+| **core-technology-template.md** | Scaffold the base app — React 19 + Vite + Tailwind v4 | none (root) |
+| **design-template.md** | Theme + UI foundation, dark/light mode (CSS tokens) | core |
+| **content-builder-template.md** | Config-driven page content + generation prompt | core + design |
+| **web3-integration-template.md** | Wallet connect + contracts — wagmi + Reown AppKit | core (design rec.) |
+| **mongo-integration-template.md** | Database layer — MongoDB via Mongoose (server-side) | core + a server |
+
+Each template lists its prerequisites and points to related skills (`/tailwind-ui`, `/wagmi`, `/blockchain-developer`, `/backend-boilerplate`) and to `github-setup-template.md`.
 
 ---
 
